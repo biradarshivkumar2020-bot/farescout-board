@@ -128,14 +128,14 @@ function card(t) {
   const hit = t.threshold != null && cur != null && cur <= t.threshold;
   const sub = t.kind === "flight"
     ? `${esc(t.config.seat || "economy")} · ${t.config.adults || 1} adult${(t.config.adults||1)>1?"s":""}${t.config.return_date ? ` · return ${esc(t.config.return_date)}` : ""}`
-    : `${esc(t.config.checkin)} → ${esc(t.config.checkout)} · cheapest FHR/THC hotel`;
+    : `${Math.round((new Date(t.config.checkout) - new Date(t.config.checkin)) / 864e5)} night(s) · 1 room · 2 adults · cheapest FHR/THC hotel`;
   return `<div class="card">
     <span class="kind ${t.kind}">${t.kind === "flight" ? "✈ Flight" : "🏨 FHR Hotel"}</span>
     <h3>${esc(t.label)}</h3>
     <div class="sub">${sub}</div>
     <div class="price-row">
       <span class="price">${fmt(cur, t.kind)}</span>
-      <span class="unit">${cur != null ? unit + (t.kind === "hotel" ? " · /night" : "") : "no data yet"}</span>
+      <span class="unit">${cur != null ? unit : "no data yet"}</span>
       ${delta}
     </div>
     ${spark(t.history)}
